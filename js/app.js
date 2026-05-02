@@ -111,22 +111,29 @@ function renderFinalSection() {
   const champion = getMatchWinner(grandFinal);
 
   content.innerHTML = `
-    <article class="final-layout">
-      <div class="final-hero">
+    <article class="final-layout bracket-section">
+      <div class="bracket-header final-header">
         <div>
-          <h2>Final del Torneo</h2>
-          <p>Los ganadores de las 4 llaves se enfrentan por el título absoluto.</p>
+          <h2 class="bracket-title">Final del Torneo</h2>
+          <p class="bracket-subtitle">Los ganadores de las 4 llaves se enfrentan por el título absoluto.</p>
         </div>
-        <div style="font-size: 42px;">🏆</div>
+        <div class="bracket-pill final-pill">FASE FINAL</div>
       </div>
 
-      <div class="final-board">
-        ${renderRoundColumn("Semifinal General", "semi", semiMatches)}
-        ${renderRoundColumn("Gran Final", "final", [grandFinal])}
+      <div class="final-stage">
+        <div class="final-board">
+          ${renderRoundColumn("Semifinal General", "semi", semiMatches)}
+          ${renderRoundColumn("Gran Final", "final", [grandFinal])}
 
-        <div class="champion-card">
-          <div class="cup">🏆</div>
-          <div class="name">${champion ? champion.name : "Campeón"}</div>
+          <div class="round-column champion-column">
+            <h3 class="round-title winner">Campeón</h3>
+            <div class="matches-list champion-list">
+              <div class="champion-card">
+                <div class="cup">🏆</div>
+                <div class="name">${champion ? champion.name : "Campeón"}</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </article>

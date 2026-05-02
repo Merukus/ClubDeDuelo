@@ -561,49 +561,135 @@ h1 {
 
 .final-layout {
   height: 100%;
-  padding: 28px;
-  display: grid;
-  grid-template-rows: auto 1fr;
-  gap: 22px;
+  padding: 22px;
 }
 
-.final-hero {
-  padding: 24px;
+.final-header {
+  padding: 4px 2px 0;
+}
+
+.final-pill {
+  color: #111827;
+  background: linear-gradient(135deg, #fef08a, #facc15, #f59e0b);
+  box-shadow: 0 0 28px rgba(250, 204, 21, 0.2);
+}
+
+.final-stage {
+  min-height: 0;
+  overflow: hidden;
   border-radius: 28px;
-  background: linear-gradient(135deg, rgba(120, 53, 15, 0.92), rgba(15, 23, 42, 0.92));
-  border: 1px solid rgba(250, 204, 21, 0.35);
-  box-shadow: 0 24px 90px rgba(0, 0, 0, 0.48);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  border: 1px solid rgba(250, 204, 21, 0.18);
+  background:
+    radial-gradient(circle at 86% 44%, rgba(250, 204, 21, 0.12), transparent 24%),
+    radial-gradient(circle at 16% 22%, rgba(168, 139, 250, 0.1), transparent 26%),
+    linear-gradient(135deg, rgba(2, 6, 23, 0.34), rgba(15, 23, 42, 0.48));
+  box-shadow: inset 0 0 42px rgba(250, 204, 21, 0.03);
 }
-
-.final-hero h2 { margin: 0; color: var(--gold); font-size: 30px; }
-.final-hero p { margin: 8px 0 0; color: #fde68a; }
 
 .final-board {
+  height: 100%;
   min-height: 0;
   overflow-x: auto;
   overflow-y: hidden;
   display: flex;
+  align-items: stretch;
   gap: 64px;
-  align-items: center;
+  padding: 34px 38px 36px;
+}
+
+.final-layout .round-column {
+  width: 292px;
+  min-width: 292px;
+}
+
+.final-layout .round-title {
+  margin-bottom: 18px;
+}
+
+.final-layout .matches-list {
+  min-height: 0;
+}
+
+.final-layout .matches-list.semi {
+  justify-content: center;
+  gap: 18px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.final-layout .matches-list.key-final,
+.final-layout .champion-list {
+  justify-content: center;
+}
+
+.final-layout .match-card {
+  background:
+    linear-gradient(135deg, rgba(11, 17, 32, 0.98), rgba(17, 24, 39, 0.94));
+  border-color: rgba(148, 163, 184, 0.26);
+}
+
+.final-layout .match-card::after {
+  right: -34px;
+  width: 34px;
+}
+
+.champion-column {
+  position: relative;
 }
 
 .champion-card {
-  width: 360px;
+  position: relative;
   min-height: 150px;
-  padding: 26px;
+  padding: 24px 22px;
   border-radius: 28px;
   color: #111827;
   text-align: center;
   font-weight: 900;
-  background: linear-gradient(135deg, #fef08a, #facc15, #f59e0b);
-  box-shadow: 0 0 54px rgba(250, 204, 21, 0.36);
+  background:
+    radial-gradient(circle at 22% 18%, rgba(255, 255, 255, 0.42), transparent 28%),
+    linear-gradient(135deg, #fef08a 0%, #facc15 48%, #f59e0b 100%);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow:
+    0 20px 46px rgba(0, 0, 0, 0.32),
+    0 0 46px rgba(250, 204, 21, 0.28);
+  display: grid;
+  place-items: center;
+  align-content: center;
 }
 
-.champion-card .cup { font-size: 42px; margin-bottom: 10px; }
-.champion-card .name { font-size: 26px; }
+.champion-card::before {
+  content: "";
+  position: absolute;
+  left: -34px;
+  top: 50%;
+  width: 34px;
+  height: 1px;
+  background: rgba(250, 204, 21, 0.35);
+}
+
+.champion-card .cup {
+  font-size: 42px;
+  line-height: 1;
+  margin-bottom: 10px;
+  filter: drop-shadow(0 8px 10px rgba(120, 53, 15, 0.18));
+}
+
+.champion-card .name {
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 26px;
+  line-height: 1.1;
+}
+
+.champion-card .caption {
+  margin-top: 8px;
+  color: rgba(17, 24, 39, 0.62);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
 
 @media (max-width: 900px) {
   .app-shell { padding: 14px; }
