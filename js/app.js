@@ -187,28 +187,51 @@ function renderPlayerSlot(player, match, slotIndex) {
 }
 
 function buildPlayerTooltipContent(player) {
-  const typeLabel = player.type === "PLAYER" ? "Jugador" : "NPC";
+  const typeLabel = player.type === "PLAYER" ? "Player" : "NPC";
   const typeClass = player.type === "PLAYER" ? "player" : "npc";
-  const nickname = player.type === "PLAYER" && player.nickname ? player.nickname : "No aplica";
-
   const history = getPlayerHistory(player.id);
-  const currentMatch = getCurrentMatchForPlayer(player.id);
-  const nextOpponent = currentMatch ? getOpponentName(currentMatch, player.id) : "Pendiente";
+  const totalVictories = getPlayerTotalVictories(player.id);
+  const bracketOrigin = getBracketWinnerOrigin(player.id);
 
   const historyHtml = history.length
-    ? history.map((item) => `<div class="tooltip-row">• ${item}</div>`).join("")
-    : `<div class="tooltip-row">Sin combates registrados todavía.</div>`;
+    ? history.map((item) => `
+        <div class="tooltip-history-item ${item.resultClass}">
+          <span>${escapeHtml(item.roundName)}</span>
+          <strong>${escapeHtml(item.resultText)}</strong>
+          <small>${escapeHtml(item.opponentName)}</small>
+        </div>
+      `).join("")
+    : `<div class="tooltip-empty-history">Sin combates registrados todavía.</div>`;
+
+  const nicknameHtml = player.type === "PLAYER"
+    ? `<div class="tooltip-stat"><span>Nickname</span><strong>${escapeHtml(player.nickname || "Sin nickname")}</strong></div>`
+    : "";
+
+  const bracketOriginHtml = activeSection === "FINAL" && bracketOrigin
+    ? `<div class="tooltip-origin">Viene de ${escapeHtml(bracketOrigin)}</div>`
+    : "";
 
   return `
-    <p class="tooltip-title">
-      ${player.name}
+    <div class="tooltip-card-head">
+      <div>
+        <p class="tooltip-kicker">${typeLabel}</p>
+        <p class="tooltip-title">${escapeHtml(player.name)}</p>
+      </div>
       <span class="type-badge ${typeClass}">${typeLabel}</span>
-    </p>
-    <div class="tooltip-row"><span class="tooltip-label">Nickname:</span> ${nickname}</div>
-    <div class="tooltip-row"><span class="tooltip-label">Llave:</span> ${player.key}</div>
-    <div class="tooltip-row"><span class="tooltip-label">Próximo rival:</span> ${nextOpponent}</div>
-    <div class="tooltip-row" style="margin-top: 10px;"><span class="tooltip-label">Historial:</span></div>
-    ${historyHtml}
+    </div>
+
+    ${bracketOriginHtml}
+
+    <div class="tooltip-stats-grid">
+      ${nicknameHtml}
+      <div class="tooltip-stat"><span>Casa</span><strong>${escapeHtml(player.house || getFallbackHouse(player.id))}</strong></div>
+      <div class="tooltip-stat tooltip-stat-inline"><span>Victorias:</span><strong>${totalVictories}</strong></div>
+    </div>
+
+    <div class="tooltip-history-title">Historial de combates</div>
+    <div class="tooltip-history-list">
+      ${historyHtml}
+    </div>
   `;
 }
 
@@ -258,21 +281,47 @@ function getPlayerHistory(playerId) {
     if (!playerWasInMatch) return;
 
     const opponent = players.find((player) => player.id !== playerId);
-    const roundName = ROUND_LABELS[match.round] || match.round;
+    const roundName = getFullRoundLabel(match);
+    const opponentName = opponent ? opponent.name : "Rival pendiente";
 
     if (!match.winnerId) {
-      history.push(`${roundName}: pendiente vs ${opponent ? opponent.name : "rival pendiente"}`);
+      history.push({
+        roundName,
+        opponentName,
+        resultText: "Pendiente",
+        resultClass: "pending"
+      });
       return;
     }
 
     if (match.winnerId === playerId) {
-      history.push(`${roundName}: ganó vs ${opponent ? opponent.name : "rival pendiente"}`);
+      history.push({
+        roundName,
+        opponentName,
+        resultText: "Victoria",
+        resultClass: "win"
+      });
     } else {
-      history.push(`${roundName}: perdió vs ${opponent ? opponent.name : "rival pendiente"}`);
+      history.push({
+        roundName,
+        opponentName,
+        resultText: "Derrota",
+        resultClass: "loss"
+      });
     }
   });
 
   return history;
+}
+
+function getFullRoundLabel(match) {
+  const baseRoundName = ROUND_LABELS[match.round] || match.round;
+
+  if (match.key === "FINAL") {
+    return match.round === "final" ? "Gran Final" : "Semifinal General";
+  }
+
+  return `${baseRoundName} ${match.key}`;
 }
 
 function getCurrentMatchForPlayer(playerId) {
@@ -389,6 +438,34 @@ function positionTooltip(target, tooltip) {
   tooltip.style.left = `${Math.round(left)}px`;
   tooltip.style.top = `${Math.round(top)}px`;
   tooltip.classList.toggle("is-below", shouldShowBelow);
+}
+
+function getPlayerTotalVictories(playerId) {
+  return tournamentData.matches.filter((match) => match.winnerId === playerId).length;
+}
+
+function getBracketWinnerOrigin(playerId) {
+  const bracketFinal = tournamentData.matches.find((match) => {
+    return match.key !== "FINAL" && match.round === "final" && match.winnerId === playerId;
+  });
+
+  if (!bracketFinal) return null;
+  return SECTION_LABELS[bracketFinal.key] || `Llave ${bracketFinal.key}`;
+}
+
+function getFallbackHouse(playerId) {
+  const index = tournamentData.players.findIndex((player) => player.id === playerId);
+  const houses = ["Casa 1", "Casa 2", "Casa 3"];
+  return houses[Math.max(index, 0) % houses.length];
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 function renderError(message) {
