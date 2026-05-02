@@ -25,7 +25,7 @@
     {"id": "p22", "name": "James Potter", "key": "C", "type": "NPC", "nickname": "", "house": "Gryffindor"},
     {"id": "p23", "name": "Arabella Duskwind", "key": "C", "type": "NPC", "nickname": "", "house": "Hufflepuff"},
     {"id": "p24", "name": "Peter Pettigrew", "key": "C", "type": "NPC", "nickname": "", "house": "Gryffindor"},
-    {"id": "p25", "name": "Tobias Flintwick", "key": "D", "type": "NPC", "nickname": "", "house": "Hufflepuff"},
+    {"id": "p25", "name": "Tobias Flin", "key": "D", "type": "NPC", "nickname": "", "house": "Hufflepuff"},
     {"id": "p26", "name": "Basil Nightwarden", "key": "D", "type": "NPC", "nickname": "", "house": "Slytherin"},
     {"id": "p27", "name": "Frank Longbottom", "key": "D", "type": "NPC", "nickname": "", "house": "Gryffindor"},
     {"id": "p28", "name": "Rosalind Fawley", "key": "D", "type": "NPC", "nickname": "", "house": "Hufflepuff"},
