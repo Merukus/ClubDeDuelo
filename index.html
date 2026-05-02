@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Torneo de Duelo</title>
+  <link rel="stylesheet" href="./css/styles.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <section class="hero-panel">
+      <div>
+        <p class="eyebrow">Torneo no oficial</p>
+        <h1>Club de Duelo</h1>
+        <p class="hero-description">
+          Torneo dividido en 4 llaves de 8 participantes. La información se actualiza a medida que se realicen los combates.
+        </p>
+      </div>
+      <div class="tournament-badge">
+        <span>Formato</span>
+        <strong>4 × 8</strong>
+        <small>32 participantes</small>
+      </div>
+    </section>
+
+    <nav class="section-nav" aria-label="Navegación del torneo">
+      <button class="nav-button active" data-section="A">Llave A</button>
+      <button class="nav-button" data-section="B">Llave B</button>
+      <button class="nav-button" data-section="C">Llave C</button>
+      <button class="nav-button" data-section="D">Llave D</button>
+      <button class="nav-button nav-button-final" data-section="FINAL">Final</button>
+    </nav>
+
+    <section id="content" class="content-panel">
+      <div class="loading-card">Cargando torneo...</div>
+    </section>
+  </main>
+
+  <script src="./js/app.js"></script>
+</body>
+</html>
