@@ -355,6 +355,7 @@ function bindGlobalPlayerTooltip() {
   document.body.appendChild(tooltip);
 
   let activeTarget = null;
+  const isTouchLikeDevice = () => window.matchMedia("(hover: none), (pointer: coarse)").matches;
 
   const showTooltip = (target) => {
     if (!tournamentData) return;
@@ -374,6 +375,8 @@ function bindGlobalPlayerTooltip() {
   };
 
   document.addEventListener("pointerover", (event) => {
+    if (isTouchLikeDevice()) return;
+
     const target = event.target.closest(".match-player[data-player-id]");
     if (!target) return;
 
@@ -381,6 +384,8 @@ function bindGlobalPlayerTooltip() {
   });
 
   document.addEventListener("pointerout", (event) => {
+    if (isTouchLikeDevice()) return;
+
     const target = event.target.closest(".match-player[data-player-id]");
     if (!target) return;
 
@@ -389,8 +394,26 @@ function bindGlobalPlayerTooltip() {
     hideTooltip();
   });
 
+  document.addEventListener("click", (event) => {
+    if (!isTouchLikeDevice()) return;
+
+    const target = event.target.closest(".match-player[data-player-id]");
+
+    if (!target) {
+      hideTooltip();
+      return;
+    }
+
+    if (activeTarget === target && tooltip.classList.contains("is-visible")) {
+      hideTooltip();
+      return;
+    }
+
+    showTooltip(target);
+  });
+
   document.addEventListener("pointermove", () => {
-    if (!activeTarget) return;
+    if (!activeTarget || isTouchLikeDevice()) return;
     positionTooltip(activeTarget, tooltip);
   });
 
