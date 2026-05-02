@@ -18,7 +18,7 @@
     {"id": "p15", "name": "Vivi Ornitier", "key": "B", "type": "PLAYER", "nickname": "Drens", "house": "Ravenclaw"},
     {"id": "p16", "name": "Joseph Hewitt", "key": "B", "type": "PLAYER", "nickname": "Conejo", "house": "Slytherin"},
     {"id": "p17", "name": "Lysandra Moonfell", "key": "C", "type": "NPC", "nickname": "", "house": "Ravenclaw"},
-    {"id": "p18", "name": "Barty Cruch Jr.", "key": "C", "type": "NPC", "nickname": "", "house": "Slytherin"},
+    {"id": "p18", "name": "Barty Crouch Jr.", "key": "C", "type": "NPC", "nickname": "", "house": "Slytherin"},
     {"id": "p19", "name": "Amycus Nott", "key": "C", "type": "NPC", "nickname": "", "house": "Slytherin"},
     {"id": "p20", "name": "Amelia Nott", "key": "C", "type": "NPC", "nickname": "", "house": "Slytherin"},
     {"id": "p21", "name": "Alice Fortescue", "key": "C", "type": "NPC", "nickname": "", "house": "Gryffindor"},
