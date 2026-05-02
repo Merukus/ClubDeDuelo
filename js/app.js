@@ -11,7 +11,7 @@ const SECTION_LABELS = {
   B: "Llave B",
   C: "Llave C",
   D: "Llave D",
-  FINAL: "Final del Campeonato"
+  FINAL: "Final del Torneo"
 };
 
 let tournamentData = null;
@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", init);
 
 async function init() {
   bindNavigation();
+  bindGlobalPlayerTooltip();
 
   try {
     const response = await fetch(DATA_URL);
@@ -91,7 +92,7 @@ function renderBracketSection(sectionKey) {
           <div class="matches-list key-final">
             <div class="key-winner-card">
               <span>🏆 Ganador ${SECTION_LABELS[sectionKey]}</span>
-              <strong>${bracketWinner ? bracketWinner.name : "Pendiente"}</strong>
+              <strong>${bracketWinner ? bracketWinner.name : "-"}</strong>
             </div>
           </div>
         </div>
@@ -113,7 +114,7 @@ function renderFinalSection() {
     <article class="final-layout">
       <div class="final-hero">
         <div>
-          <h2>Final del Campeonato</h2>
+          <h2>Final del Torneo</h2>
           <p>Los ganadores de las 4 llaves se enfrentan por el título absoluto.</p>
         </div>
         <div style="font-size: 42px;">🏆</div>
@@ -125,7 +126,7 @@ function renderFinalSection() {
 
         <div class="champion-card">
           <div class="cup">🏆</div>
-          <div class="name">${champion ? champion.name : "Campeón pendiente"}</div>
+          <div class="name">${champion ? champion.name : "Campeón"}</div>
         </div>
       </div>
     </article>
@@ -176,19 +177,17 @@ function renderPlayerSlot(player, match, slotIndex) {
   }
 
   const isWinner = match.winnerId === player.id;
-  const tooltip = buildPlayerTooltip(player);
 
   return `
-    <div class="match-player ${isWinner ? "is-winner" : ""}">
+    <div class="match-player ${isWinner ? "is-winner" : ""}" data-player-id="${player.id}">
       <span class="player-name">${player.name}</span>
       <span class="player-score">${score ?? 0}</span>
-      ${tooltip}
     </div>
   `;
 }
 
-function buildPlayerTooltip(player) {
-  const typeLabel = player.type === "PLAYER" ? "Player" : "NPC";
+function buildPlayerTooltipContent(player) {
+  const typeLabel = player.type === "PLAYER" ? "Jugador" : "NPC";
   const typeClass = player.type === "PLAYER" ? "player" : "npc";
   const nickname = player.type === "PLAYER" && player.nickname ? player.nickname : "No aplica";
 
@@ -201,17 +200,15 @@ function buildPlayerTooltip(player) {
     : `<div class="tooltip-row">Sin combates registrados todavía.</div>`;
 
   return `
-    <div class="player-tooltip">
-      <p class="tooltip-title">
-        ${player.name}
-        <span class="type-badge ${typeClass}">${typeLabel}</span>
-      </p>
-      <div class="tooltip-row"><span class="tooltip-label">Nickname:</span> ${nickname}</div>
-      <div class="tooltip-row"><span class="tooltip-label">Llave:</span> ${player.key}</div>
-      <div class="tooltip-row"><span class="tooltip-label">Próximo rival:</span> ${nextOpponent}</div>
-      <div class="tooltip-row" style="margin-top: 10px;"><span class="tooltip-label">Historial:</span></div>
-      ${historyHtml}
-    </div>
+    <p class="tooltip-title">
+      ${player.name}
+      <span class="type-badge ${typeClass}">${typeLabel}</span>
+    </p>
+    <div class="tooltip-row"><span class="tooltip-label">Nickname:</span> ${nickname}</div>
+    <div class="tooltip-row"><span class="tooltip-label">Llave:</span> ${player.key}</div>
+    <div class="tooltip-row"><span class="tooltip-label">Próximo rival:</span> ${nextOpponent}</div>
+    <div class="tooltip-row" style="margin-top: 10px;"><span class="tooltip-label">Historial:</span></div>
+    ${historyHtml}
   `;
 }
 
@@ -292,6 +289,106 @@ function getOpponentName(match, playerId) {
   const opponent = players.find((player) => player.id !== playerId);
 
   return opponent ? opponent.name : "Rival pendiente";
+}
+
+
+function bindGlobalPlayerTooltip() {
+  const tooltip = document.createElement("div");
+  tooltip.className = "player-tooltip-portal";
+  tooltip.setAttribute("role", "tooltip");
+  document.body.appendChild(tooltip);
+
+  let activeTarget = null;
+
+  const showTooltip = (target) => {
+    if (!tournamentData) return;
+
+    const player = getPlayerById(target.dataset.playerId);
+    if (!player) return;
+
+    activeTarget = target;
+    tooltip.innerHTML = buildPlayerTooltipContent(player);
+    tooltip.classList.add("is-visible");
+    positionTooltip(target, tooltip);
+  };
+
+  const hideTooltip = () => {
+    activeTarget = null;
+    tooltip.classList.remove("is-visible", "is-below");
+  };
+
+  document.addEventListener("pointerover", (event) => {
+    const target = event.target.closest(".match-player[data-player-id]");
+    if (!target) return;
+
+    showTooltip(target);
+  });
+
+  document.addEventListener("pointerout", (event) => {
+    const target = event.target.closest(".match-player[data-player-id]");
+    if (!target) return;
+
+    if (event.relatedTarget && target.contains(event.relatedTarget)) return;
+
+    hideTooltip();
+  });
+
+  document.addEventListener("pointermove", () => {
+    if (!activeTarget) return;
+    positionTooltip(activeTarget, tooltip);
+  });
+
+  window.addEventListener("resize", () => {
+    if (!activeTarget) return;
+    positionTooltip(activeTarget, tooltip);
+  });
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (!activeTarget) return;
+      positionTooltip(activeTarget, tooltip);
+    },
+    true
+  );
+}
+
+function positionTooltip(target, tooltip) {
+  const targetRect = target.getBoundingClientRect();
+  const tooltipRect = tooltip.getBoundingClientRect();
+  const viewportWidth = window.innerWidth;
+  const viewportHeight = window.innerHeight;
+  const margin = 12;
+  const gap = 10;
+
+  let left = targetRect.left + 12;
+  let top = targetRect.top - tooltipRect.height - gap;
+  let shouldShowBelow = false;
+
+  if (top < margin) {
+    top = targetRect.bottom + gap;
+    shouldShowBelow = true;
+  }
+
+  if (left + tooltipRect.width > viewportWidth - margin) {
+    left = viewportWidth - tooltipRect.width - margin;
+  }
+
+  if (left < margin) {
+    left = margin;
+  }
+
+  if (top + tooltipRect.height > viewportHeight - margin) {
+    top = viewportHeight - tooltipRect.height - margin;
+  }
+
+  if (top < margin) {
+    top = margin;
+  }
+
+  tooltip.style.left = `${Math.round(left)}px`;
+  tooltip.style.top = `${Math.round(top)}px`;
+  tooltip.classList.toggle("is-below", shouldShowBelow);
 }
 
 function renderError(message) {

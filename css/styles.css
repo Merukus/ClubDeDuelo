@@ -329,12 +329,11 @@ h1 {
   font-weight: 900;
 }
 
-.player-tooltip {
-  display: none;
-  position: absolute;
-  z-index: 30;
-  left: 12px;
-  bottom: calc(100% + 10px);
+.player-tooltip-portal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 2147483647;
   width: 290px;
   padding: 13px 14px;
   border-radius: 16px;
@@ -343,9 +342,24 @@ h1 {
   border: 1px solid rgba(148, 163, 184, 0.22);
   box-shadow: 0 18px 42px rgba(0, 0, 0, 0.5);
   pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px) scale(0.98);
+  transition:
+    opacity 160ms ease,
+    visibility 160ms ease,
+    transform 160ms ease;
 }
 
-.match-player:hover .player-tooltip { display: block; }
+.player-tooltip-portal.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+.player-tooltip-portal.is-below {
+  transform-origin: top left;
+}
 
 .tooltip-title {
   margin: 0 0 8px;
