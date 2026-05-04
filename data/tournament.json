@@ -35,7 +35,7 @@
     {"id": "p32", "name": "Isolde Silverbrook", "key": "D", "type": "NPC", "nickname": "", "house": "Ravenclaw"}
   ],
   "matches": [
-    {"id": "A-QF-1", "key": "A", "round": "quarter", "label": "Cuartos A1", "slots": ["p01", "p08"], "scores": ["-", "-"], "winnerId": null},
+    {"id": "A-QF-1", "key": "A", "round": "quarter", "label": "Cuartos A1", "slots": ["p01", "p08"], "scores": ["D", "V"], "winnerId": "p08"},
     {"id": "A-QF-2", "key": "A", "round": "quarter", "label": "Cuartos A2", "slots": ["p04", "p05"], "scores": ["D", "V"], "winnerId": "p05"},
     {"id": "A-QF-3", "key": "A", "round": "quarter", "label": "Cuartos A3", "slots": ["p02", "p07"], "scores": ["V", "D"], "winnerId": "p02"},
     {"id": "A-QF-4", "key": "A", "round": "quarter", "label": "Cuartos A4", "slots": ["p03", "p06"], "scores": ["V", "D"], "winnerId": "p03"},
@@ -47,7 +47,7 @@
     {"id": "B-QF-3", "key": "B", "round": "quarter", "label": "Cuartos B3", "slots": ["p10", "p15"], "scores": ["D", "V"], "winnerId": "p15"},
     {"id": "B-QF-4", "key": "B", "round": "quarter", "label": "Cuartos B4", "slots": ["p11", "p14"], "scores": ["V", "D"], "winnerId": "p11"},
     {"id": "B-SF-1", "key": "B", "round": "semi", "label": "Semifinal B1", "slots": [{"fromMatch": "B-QF-1"}, {"fromMatch": "B-QF-2"}], "scores": ["-", "-"], "winnerId": null},
-    {"id": "B-SF-2", "key": "B", "round": "semi", "label": "Semifinal B2", "slots": [{"fromMatch": "B-QF-3"}, {"fromMatch": "B-QF-4"}], "scores": ["-", "-"], "winnerId": null},
+    {"id": "B-SF-2", "key": "B", "round": "semi", "label": "Semifinal B2", "slots": [{"fromMatch": "B-QF-3"}, {"fromMatch": "B-QF-4"}], "scores": ["V", "D"], "winnerId": "p15"},
     {"id": "B-F-1", "key": "B", "round": "final", "label": "Final Llave B", "slots": [{"fromMatch": "B-SF-1"}, {"fromMatch": "B-SF-2"}], "scores": ["-", "-"], "winnerId": null},
     {"id": "C-QF-1", "key": "C", "round": "quarter", "label": "Cuartos C1", "slots": ["p17", "p24"], "scores": ["D", "V"], "winnerId": "p24"},
     {"id": "C-QF-2", "key": "C", "round": "quarter", "label": "Cuartos C2", "slots": ["p20", "p21"], "scores": ["D", "V"], "winnerId": "p21"},
