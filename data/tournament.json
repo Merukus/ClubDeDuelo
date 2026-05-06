@@ -46,7 +46,7 @@
     {"id": "B-QF-2", "key": "B", "round": "quarter", "label": "Cuartos B2", "slots": ["p12", "p13"], "scores": ["V", "D"], "winnerId": "p12"},
     {"id": "B-QF-3", "key": "B", "round": "quarter", "label": "Cuartos B3", "slots": ["p10", "p15"], "scores": ["D", "V"], "winnerId": "p15"},
     {"id": "B-QF-4", "key": "B", "round": "quarter", "label": "Cuartos B4", "slots": ["p11", "p14"], "scores": ["V", "D"], "winnerId": "p11"},
-    {"id": "B-SF-1", "key": "B", "round": "semi", "label": "Semifinal B1", "slots": [{"fromMatch": "B-QF-1"}, {"fromMatch": "B-QF-2"}], "scores": ["-", "-"], "winnerId": null},
+    {"id": "B-SF-1", "key": "B", "round": "semi", "label": "Semifinal B1", "slots": [{"fromMatch": "B-QF-1"}, {"fromMatch": "B-QF-2"}], "scores": ["V", "D"], "winnerId": "p09"},
     {"id": "B-SF-2", "key": "B", "round": "semi", "label": "Semifinal B2", "slots": [{"fromMatch": "B-QF-3"}, {"fromMatch": "B-QF-4"}], "scores": ["V", "D"], "winnerId": "p15"},
     {"id": "B-F-1", "key": "B", "round": "final", "label": "Final Llave B", "slots": [{"fromMatch": "B-SF-1"}, {"fromMatch": "B-SF-2"}], "scores": ["-", "-"], "winnerId": null},
     {"id": "C-QF-1", "key": "C", "round": "quarter", "label": "Cuartos C1", "slots": ["p17", "p24"], "scores": ["D", "V"], "winnerId": "p24"},
