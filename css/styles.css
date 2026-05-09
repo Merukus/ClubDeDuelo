@@ -761,8 +761,8 @@ h1 {
 .champion-card .name {
   max-width: 100%;
   overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  white-space: normal;
+  word-wrap: break-word;
   font-size: 26px;
   line-height: 1.1;
 }
